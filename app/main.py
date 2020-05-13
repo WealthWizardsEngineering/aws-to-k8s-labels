@@ -75,9 +75,6 @@ def tag_nodes():
 
             time.sleep(0.5)
 
-        else:
-            print node['name'] + ' has all labels.'
-
 while True:
     try:
         time.sleep(30)
