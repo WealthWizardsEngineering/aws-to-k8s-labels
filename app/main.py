@@ -1,4 +1,5 @@
 import os
+import datetime
 import boto3
 import json
 import time
@@ -59,7 +60,9 @@ def tag_nodes():
 
         # Only patch k8s node labels if they are missing something from EC2 or ASG
         if all(item in nodeLabels.items() for item in ec2Labels.items()) is False:
-            print(ec2Labels)
+            now = datetime.datetime.now()
+            now = now.strftime('%Y-%m-%d %H:%M:%S')
+            print(f"{now} {node['name']}: {ec2Labels}")
 
             body = {
                 'kind': 'Node',
