@@ -22,7 +22,7 @@ def get_url(url):
 def get_nodes():
     nodes = s.get(get_url('/api/v1/nodes'), verify=False)
     return list(map(lambda x: {'name': x['metadata']['name'],
-                               'id': x['spec']['externalID'],
+                               'id': x['spec']['providerID'].split('/')[-1],
                                'labels': x['metadata']['labels']},
                     json.loads(nodes.content)['items']))
 
@@ -59,7 +59,7 @@ def tag_nodes():
 
         # Only patch k8s node labels if they are missing something from EC2 or ASG
         if all(item in nodeLabels.items() for item in ec2Labels.items()) is False:
-            print ec2Labels
+            print(ec2Labels)
 
             body = {
                 'kind': 'Node',
@@ -76,11 +76,11 @@ def tag_nodes():
             time.sleep(0.5)
 
         else:
-            print node['name'] + ' has all labels.'
+            print(node['name'] + ' has all labels.')
 
 while True:
     try:
         time.sleep(30)
         tag_nodes()
     except Exception as e:
-        print e
+        print(e)
